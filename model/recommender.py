@@ -1,6 +1,16 @@
-import pandas as pd
 import os
 import random
+import csv
+
+def load_data():
+    data = []
+    with open("data/outfits.csv", newline='') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            data.append(row)
+    return data
+
+df = load_data()
 
 # Load dataset
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
