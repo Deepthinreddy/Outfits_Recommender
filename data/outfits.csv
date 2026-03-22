@@ -1,0 +1,18 @@
+gender,weather,occasion,style,outfit
+men,summer,casual,western,t-shirt + denim shorts + sneakers
+men,summer,formal,western,linen shirt + chinos + loafers
+men,winter,casual,western,sweater + jeans + boots
+men,winter,formal,western,blazer + trousers + formal shoes
+men,rainy,casual,western,t-shirt + joggers + waterproof sneakers
+men,summer,festive,ethnic,kurta + pajama + sandals
+men,winter,festive,ethnic,silk kurta + jacket + churidar
+men,summer,party,western,black shirt + jeans + boots
+
+women,summer,casual,western,crop top + skirt + sneakers
+women,summer,formal,western,blouse + trousers + heels
+women,winter,casual,western,sweater + jeans + ankle boots
+women,winter,formal,western,coat + dress + heels
+women,rainy,casual,western,t-shirt + shorts + waterproof sandals
+women,summer,festive,ethnic,kurti + palazzo + jhumkas
+women,winter,festive,ethnic,anarkali + dupatta + heels
+women,summer,party,western,bodycon dress + heels + clutch
