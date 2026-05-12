@@ -140,21 +140,20 @@ def recommend_outfit(gender, weather, occasion, style):
 
     # WINTER
     elif weather == "winter":
+        if (
+        "shorts" in outfit_lower
+        or "midi dress" in outfit_lower
+        or "mini skirt" in outfit_lower
+    ):
 
-      if (
-    "shorts" in outfit_lower
-    or "midi dress" in outfit_lower
-    or "mini skirt" in outfit_lower
-):
+        outfit = "turtleneck + trench coat + boots"
 
-    outfit = "turtleneck + trench coat + boots"
+        elif (
+        "sleeveless" in outfit_lower
+        or "tank top" in outfit_lower
+    ):
 
-elif (
-    "sleeveless" in outfit_lower
-    or "tank top" in outfit_lower
-):
-
-    outfit = "full sleeve sweater + jeans + ankle boots"
+        outfit = "full sleeve sweater + jeans + ankle boots"
 
     # RAINY
     elif weather == "rainy":
