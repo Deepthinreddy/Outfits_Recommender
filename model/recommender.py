@@ -5,6 +5,9 @@ import csv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "data", "outfits.csv")
 
+
+# ---------------- LOAD DATA ---------------- #
+
 def load_data():
 
     data = []
@@ -18,7 +21,11 @@ def load_data():
 
     return data
 
+
 df = load_data()
+
+
+# ---------------- COLOR MAP ---------------- #
 
 COLOR_MAP = {
 
@@ -39,9 +46,14 @@ COLOR_MAP = {
     ]
 }
 
+
+# ---------------- EXPLANATION GENERATOR ---------------- #
+
 def generate_explanation(weather, occasion, style):
 
     explanation = []
+
+    # WEATHER
 
     if weather == "winter":
         explanation.append("Keeps you warm and comfortable")
@@ -51,6 +63,8 @@ def generate_explanation(weather, occasion, style):
 
     elif weather == "rainy":
         explanation.append("Practical and comfortable for rainy conditions")
+
+    # OCCASION
 
     if occasion == "formal":
         explanation.append("Gives a polished and professional look")
@@ -64,6 +78,8 @@ def generate_explanation(weather, occasion, style):
     else:
         explanation.append("Relaxed and comfortable for daily wear")
 
+    # STYLE
+
     if style == "ethnic":
         explanation.append("Reflects cultural elegance")
 
@@ -72,7 +88,12 @@ def generate_explanation(weather, occasion, style):
 
     return explanation
 
+
+# ---------------- MAIN RECOMMENDER ---------------- #
+
 def recommend_outfit(gender, weather, occasion, style):
+
+    # -------- EXACT MATCH -------- #
 
     result = [
 
@@ -84,6 +105,22 @@ def recommend_outfit(gender, weather, occasion, style):
         and row["style"] == style
     ]
 
+    # -------- SMART FALLBACK 1 -------- #
+    # Match gender + occasion
+
+    if not result:
+
+        result = [
+
+            row for row in df
+
+            if row["gender"] == gender
+            and row["occasion"] == occasion
+        ]
+
+    # -------- SMART FALLBACK 2 -------- #
+    # Match gender + style
+
     if not result:
 
         result = [
@@ -94,6 +131,8 @@ def recommend_outfit(gender, weather, occasion, style):
             and row["style"] == style
         ]
 
+    # -------- FINAL RANDOM FALLBACK -------- #
+
     if not result:
         result = [random.choice(df)]
 
@@ -102,6 +141,8 @@ def recommend_outfit(gender, weather, occasion, style):
     outfit = selected["outfit"]
 
     outfit_lower = outfit.lower()
+
+    # ---------------- WEATHER ADJUSTMENTS ---------------- #
 
     # SUMMER
 
@@ -147,11 +188,30 @@ def recommend_outfit(gender, weather, occasion, style):
         if (
             "heels" in outfit_lower
             or "suede" in outfit_lower
+            or "shorts" in outfit_lower
         ):
 
-            outfit = "oversized shirt + joggers + waterproof sneakers"
+            outfit = "formal trench coat + straight pants + waterproof loafers"
 
-    # COLORS
+    # ---------------- FORMAL FIXES ---------------- #
+
+    if occasion == "formal":
+
+        if (
+            "shorts" in outfit_lower
+            or "sandals" in outfit_lower
+            or "hoodie" in outfit_lower
+        ):
+
+            if gender == "women":
+
+                outfit = "blazer + straight trousers + loafers"
+
+            else:
+
+                outfit = "formal shirt + tailored pants + oxford shoes"
+
+    # ---------------- COLORS ---------------- #
 
     if weather == "summer":
 
@@ -181,11 +241,15 @@ def recommend_outfit(gender, weather, occasion, style):
 
         colors = random.sample(COLOR_MAP[style], 3)
 
+    # ---------------- EXPLANATIONS ---------------- #
+
     explanation = generate_explanation(
         weather,
         occasion,
         style
     )
+
+    # Extra reasoning
 
     if weather == "summer":
 
@@ -203,6 +267,14 @@ def recommend_outfit(gender, weather, occasion, style):
 
         explanation.append(
             "Selected pieces are easier to wear in wet conditions"
+        )
+
+    # Formal reasoning
+
+    if occasion == "formal":
+
+        explanation.append(
+            "Structured outfit pieces improve professional appearance"
         )
 
     return outfit, colors, explanation
