@@ -82,6 +82,7 @@ def generate_explanation(weather, occasion, style):
 
     return explanation
 
+
 # ---------------- MAIN RECOMMENDER ---------------- #
 
 def recommend_outfit(gender, weather, occasion, style):
@@ -140,25 +141,29 @@ def recommend_outfit(gender, weather, occasion, style):
 
     # WINTER
     elif weather == "winter":
-        if (
-        "shorts" in outfit_lower
-        or "midi dress" in outfit_lower
-        or "mini skirt" in outfit_lower
-    ):
 
-        outfit = "turtleneck + trench coat + boots"
+        if (
+            "shorts" in outfit_lower
+            or "midi dress" in outfit_lower
+            or "mini skirt" in outfit_lower
+        ):
+
+            outfit = "turtleneck + trench coat + boots"
 
         elif (
-        "sleeveless" in outfit_lower
-        or "tank top" in outfit_lower
-    ):
+            "sleeveless" in outfit_lower
+            or "tank top" in outfit_lower
+        ):
 
-        outfit = "full sleeve sweater + jeans + ankle boots"
+            outfit = "full sleeve sweater + jeans + ankle boots"
 
     # RAINY
     elif weather == "rainy":
 
-        if "heels" in outfit_lower or "suede" in outfit_lower:
+        if (
+            "heels" in outfit_lower
+            or "suede" in outfit_lower
+        ):
 
             outfit = "oversized shirt + joggers + waterproof sneakers"
 
