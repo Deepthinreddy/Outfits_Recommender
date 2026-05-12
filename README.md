@@ -2,7 +2,7 @@
 
 An intelligent outfit recommendation system that suggests clothing combinations based on user preferences such as weather, occasion, style, and gender.
 
-🔗 **Live Demo:** Coming Soon  
+🔗 **Live Demo:** https://outfitsrecommender.streamlit.app/  
 
 ---
 
