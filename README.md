@@ -77,7 +77,7 @@ Build a lightweight AI-powered stylist that delivers contextual outfit recommend
 
 ## 📂 Project Structure
 
-
+```text
 Outfits_Recommender/
 │
 ├── app/
@@ -98,7 +98,7 @@ Outfits_Recommender/
 ├── requirements.txt
 ├── runtime.txt
 └── README.md
-
+```
 
 ---
 
