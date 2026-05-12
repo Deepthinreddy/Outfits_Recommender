@@ -2,6 +2,8 @@ import os
 import random
 import csv
 
+# ---------------- PATH SETUP ---------------- #
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "data", "outfits.csv")
 
@@ -53,38 +55,65 @@ def generate_explanation(weather, occasion, style):
 
     explanation = []
 
-    # WEATHER
+    # WEATHER REASONING
 
     if weather == "winter":
-        explanation.append("Keeps you warm and comfortable")
+
+        explanation.append(
+            "Keeps you warm and comfortable"
+        )
 
     elif weather == "summer":
-        explanation.append("Light and breathable for hot weather")
+
+        explanation.append(
+            "Light and breathable for hot weather"
+        )
 
     elif weather == "rainy":
-        explanation.append("Practical and comfortable for rainy conditions")
 
-    # OCCASION
+        explanation.append(
+            "Practical and comfortable for rainy conditions"
+        )
+
+    # OCCASION REASONING
 
     if occasion == "formal":
-        explanation.append("Gives a polished and professional look")
+
+        explanation.append(
+            "Gives a polished and professional look"
+        )
 
     elif occasion == "party":
-        explanation.append("Stylish and eye-catching for social events")
+
+        explanation.append(
+            "Stylish and eye-catching for social events"
+        )
 
     elif occasion == "festive":
-        explanation.append("Perfect for traditional and festive vibes")
+
+        explanation.append(
+            "Perfect for traditional and festive vibes"
+        )
 
     else:
-        explanation.append("Relaxed and comfortable for daily wear")
 
-    # STYLE
+        explanation.append(
+            "Relaxed and comfortable for daily wear"
+        )
+
+    # STYLE REASONING
 
     if style == "ethnic":
-        explanation.append("Reflects cultural elegance")
+
+        explanation.append(
+            "Reflects cultural elegance"
+        )
 
     else:
-        explanation.append("Modern and versatile styling")
+
+        explanation.append(
+            "Modern and versatile styling"
+        )
 
     return explanation
 
@@ -93,7 +122,7 @@ def generate_explanation(weather, occasion, style):
 
 def recommend_outfit(gender, weather, occasion, style):
 
-    # -------- EXACT MATCH -------- #
+    # ---------------- EXACT MATCH ---------------- #
 
     result = [
 
@@ -105,7 +134,7 @@ def recommend_outfit(gender, weather, occasion, style):
         and row["style"] == style
     ]
 
-    # -------- SMART FALLBACK 1 -------- #
+    # ---------------- FALLBACK 1 ---------------- #
     # Match gender + occasion
 
     if not result:
@@ -118,7 +147,7 @@ def recommend_outfit(gender, weather, occasion, style):
             and row["occasion"] == occasion
         ]
 
-    # -------- SMART FALLBACK 2 -------- #
+    # ---------------- FALLBACK 2 ---------------- #
     # Match gender + style
 
     if not result:
@@ -131,10 +160,13 @@ def recommend_outfit(gender, weather, occasion, style):
             and row["style"] == style
         ]
 
-    # -------- FINAL RANDOM FALLBACK -------- #
+    # ---------------- FINAL RANDOM FALLBACK ---------------- #
 
     if not result:
+
         result = [random.choice(df)]
+
+    # ---------------- SELECT OUTFIT ---------------- #
 
     selected = random.choice(result)
 
@@ -142,106 +174,161 @@ def recommend_outfit(gender, weather, occasion, style):
 
     outfit_lower = outfit.lower()
 
-    # ---------------- WEATHER ADJUSTMENTS ---------------- #
+    # =========================================================
+    # WEATHER-BASED INTELLIGENT OVERRIDES
+    # =========================================================
 
-    # SUMMER
+    # ---------------- SUMMER ---------------- #
 
     if weather == "summer":
+
+        # Heavy outfits
 
         if (
             "hoodie" in outfit_lower
             or "jacket" in outfit_lower
+            or "coat" in outfit_lower
         ):
 
-            outfit = "oversized t-shirt + linen pants + sneakers"
+            if gender == "women":
+
+                outfit = "cotton crop shirt + linen pants + sneakers"
+
+            else:
+
+                outfit = "oversized t-shirt + linen pants + sneakers"
+
+        # Hot-weather discomfort outfits
 
         elif (
             "bodycon" in outfit_lower
             or "boots" in outfit_lower
         ):
 
-            outfit = "sleeveless midi dress + sandals + sling bag"
+            if gender == "women":
 
-    # WINTER
+                outfit = "sleeveless midi dress + sandals + sling bag"
+
+            else:
+
+                outfit = "cotton shirt + chinos + loafers"
+
+    # ---------------- WINTER ---------------- #
 
     elif weather == "winter":
 
         if (
             "shorts" in outfit_lower
-            or "midi dress" in outfit_lower
             or "mini skirt" in outfit_lower
+            or "midi dress" in outfit_lower
         ):
 
-            outfit = "turtleneck + trench coat + boots"
+            if gender == "women":
+
+                outfit = "turtleneck + trench coat + boots"
+
+            else:
+
+                outfit = "sweater + wool trousers + boots"
 
         elif (
             "sleeveless" in outfit_lower
             or "tank top" in outfit_lower
         ):
 
-            outfit = "full sleeve sweater + jeans + ankle boots"
+            if gender == "women":
 
-    # RAINY
-
-    # RAINY
-
-elif weather == "rainy":
-
-    # ETHNIC + RAINY
-
-    if style == "ethnic":
-
-        if gender == "women":
-
-            outfit = "layered kurta set + leggings + closed flats"
-
-        else:
-
-            outfit = "kurta + straight pants + loafers"
-
-    # WESTERN + RAINY
-
-    else:
-
-        if (
-            "heels" in outfit_lower
-            or "suede" in outfit_lower
-            or "shorts" in outfit_lower
-        ):
-
-            if occasion == "formal":
-
-                if gender == "women":
-
-                    outfit = "formal trench coat + straight pants + waterproof loafers"
-
-                else:
-
-                    outfit = "formal jacket + tailored pants + waterproof shoes"
+                outfit = "full sleeve sweater + jeans + ankle boots"
 
             else:
 
-                outfit = "oversized shirt + joggers + waterproof sneakers"
+                outfit = "hooded sweatshirt + denim jeans + sneakers"
 
-    # ---------------- FORMAL FIXES ---------------- #
+    # ---------------- RAINY ---------------- #
+
+    elif weather == "rainy":
+
+        # ETHNIC RAINY LOOKS
+
+        if style == "ethnic":
+
+            if gender == "women":
+
+                outfit = "layered kurta set + leggings + closed flats"
+
+            else:
+
+                outfit = "kurta + straight pants + loafers"
+
+        # WESTERN RAINY LOOKS
+
+        else:
+
+            if (
+                "heels" in outfit_lower
+                or "suede" in outfit_lower
+                or "shorts" in outfit_lower
+            ):
+
+                # FORMAL RAINY LOOKS
+
+                if occasion == "formal":
+
+                    if gender == "women":
+
+                        outfit = "formal trench coat + straight pants + waterproof loafers"
+
+                    else:
+
+                        outfit = "formal jacket + tailored pants + waterproof shoes"
+
+                # CASUAL RAINY LOOKS
+
+                else:
+
+                    if gender == "women":
+
+                        outfit = "oversized shirt + joggers + waterproof sneakers"
+
+                    else:
+
+                        outfit = "hoodie + joggers + waterproof sneakers"
+
+    # =========================================================
+    # FORMALITY CHECKS
+    # =========================================================
 
     if occasion == "formal":
 
         if (
-            "shorts" in outfit_lower
-            or "sandals" in outfit_lower
-            or "hoodie" in outfit_lower
+            "shorts" in outfit.lower()
+            or "sandals" in outfit.lower()
+            or "hoodie" in outfit.lower()
         ):
 
-            if gender == "women":
+            if style == "ethnic":
 
-                outfit = "blazer + straight trousers + loafers"
+                if gender == "women":
+
+                    outfit = "elegant kurta set + straight pants + flats"
+
+                else:
+
+                    outfit = "formal kurta + trousers + loafers"
 
             else:
 
-                outfit = "formal shirt + tailored pants + oxford shoes"
+                if gender == "women":
 
-    # ---------------- COLORS ---------------- #
+                    outfit = "blazer + straight trousers + loafers"
+
+                else:
+
+                    outfit = "formal shirt + tailored pants + oxford shoes"
+
+    # =========================================================
+    # COLOR LOGIC
+    # =========================================================
 
     if weather == "summer":
 
@@ -269,9 +356,14 @@ elif weather == "rainy":
 
     else:
 
-        colors = random.sample(COLOR_MAP[style], 3)
+        colors = random.sample(
+            COLOR_MAP[style],
+            3
+        )
 
-    # ---------------- EXPLANATIONS ---------------- #
+    # =========================================================
+    # EXPLANATIONS
+    # =========================================================
 
     explanation = generate_explanation(
         weather,
@@ -279,7 +371,7 @@ elif weather == "rainy":
         style
     )
 
-    # Extra reasoning
+    # WEATHER CONTEXT
 
     if weather == "summer":
 
@@ -299,12 +391,20 @@ elif weather == "rainy":
             "Selected pieces are easier to wear in wet conditions"
         )
 
-    # Formal reasoning
+    # FORMAL CONTEXT
 
     if occasion == "formal":
 
         explanation.append(
             "Structured outfit pieces improve professional appearance"
+        )
+
+    # ETHNIC CONTEXT
+
+    if style == "ethnic":
+
+        explanation.append(
+            "Styling maintains traditional aesthetics while staying practical"
         )
 
     return outfit, colors, explanation
