@@ -183,7 +183,25 @@ def recommend_outfit(gender, weather, occasion, style):
 
     # RAINY
 
-    elif weather == "rainy":
+    # RAINY
+
+elif weather == "rainy":
+
+    # ETHNIC + RAINY
+
+    if style == "ethnic":
+
+        if gender == "women":
+
+            outfit = "layered kurta set + leggings + closed flats"
+
+        else:
+
+            outfit = "kurta + straight pants + loafers"
+
+    # WESTERN + RAINY
+
+    else:
 
         if (
             "heels" in outfit_lower
@@ -191,7 +209,19 @@ def recommend_outfit(gender, weather, occasion, style):
             or "shorts" in outfit_lower
         ):
 
-            outfit = "formal trench coat + straight pants + waterproof loafers"
+            if occasion == "formal":
+
+                if gender == "women":
+
+                    outfit = "formal trench coat + straight pants + waterproof loafers"
+
+                else:
+
+                    outfit = "formal jacket + tailored pants + waterproof shoes"
+
+            else:
+
+                outfit = "oversized shirt + joggers + waterproof sneakers"
 
     # ---------------- FORMAL FIXES ---------------- #
 
