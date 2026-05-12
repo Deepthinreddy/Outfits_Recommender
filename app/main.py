@@ -1,15 +1,11 @@
 import streamlit as st
 from model.recommender import recommend_outfit
 
-# ---------------- PAGE CONFIG ---------------- #
-
 st.set_page_config(
     page_title="AI Outfit Recommender",
     page_icon="👗",
     layout="centered"
 )
-
-# ---------------- CUSTOM CSS ---------------- #
 
 st.markdown("""
 <style>
@@ -45,12 +41,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- TITLE ---------------- #
-
 st.title("AI Outfit Recommender 👗")
 st.caption("Personalized outfit suggestions based on context, style, and weather.")
-
-# ---------------- AI STYLIST INPUT ---------------- #
 
 st.markdown("## 💬 AI Stylist")
 
@@ -65,33 +57,86 @@ def extract_preferences(prompt):
 
     prompt = prompt.lower()
 
-    weather = "summer"
-    occasion = "casual"
-    style = "western"
+    weather = None
+    occasion = None
+    style = None
 
-    # Weather Detection
-    if "cold" in prompt or "winter" in prompt:
+    # WEATHER
+
+    if any(word in prompt for word in [
+        "cold",
+        "winter",
+        "cool",
+        "chilly",
+        "freezing"
+    ]):
         weather = "winter"
 
-    elif "rain" in prompt:
+    elif any(word in prompt for word in [
+        "rain",
+        "rainy",
+        "wet",
+        "drizzle"
+    ]):
         weather = "rainy"
 
-    # Occasion Detection
-    if "party" in prompt:
+    elif any(word in prompt for word in [
+        "hot",
+        "summer",
+        "warm",
+        "sunny"
+    ]):
+        weather = "summer"
+
+    # OCCASION
+
+    if any(word in prompt for word in [
+        "party",
+        "club",
+        "nightout",
+        "concert",
+        "date",
+        "dinner"
+    ]):
         occasion = "party"
 
-    elif "office" in prompt or "meeting" in prompt:
+    elif any(word in prompt for word in [
+        "formal",
+        "office",
+        "meeting",
+        "business",
+        "corporate"
+    ]):
         occasion = "formal"
 
-    elif "date" in prompt or "dinner" in prompt:
-        occasion = "party"
-
-    elif "festival" in prompt or "festive" in prompt:
+    elif any(word in prompt for word in [
+        "festival",
+        "festive",
+        "traditional",
+        "wedding"
+    ]):
         occasion = "festive"
 
-    # Style Detection
-    if "ethnic" in prompt or "traditional" in prompt:
+    elif any(word in prompt for word in [
+        "casual",
+        "daily",
+        "relaxed"
+    ]):
+        occasion = "casual"
+
+    # STYLE
+
+    if any(word in prompt for word in [
+        "ethnic",
+        "traditional"
+    ]):
         style = "ethnic"
+
+    elif any(word in prompt for word in [
+        "western",
+        "modern"
+    ]):
+        style = "western"
 
     return weather, occasion, style
 
@@ -114,10 +159,20 @@ style = st.selectbox(
     ["western", "ethnic"]
 )
 
-# ---------------- AI PROMPT OVERRIDE ---------------- #
+# ---------------- AI PROMPT DETECTION ---------------- #
 
 if user_prompt:
-    weather, occasion, style = extract_preferences(user_prompt)
+
+    detected_weather, detected_occasion, detected_style = extract_preferences(user_prompt)
+
+    if detected_weather:
+        weather = detected_weather
+
+    if detected_occasion:
+        occasion = detected_occasion
+
+    if detected_style:
+        style = detected_style
 
     st.info(
         f"Detected Preferences → Weather: {weather} | Occasion: {occasion} | Style: {style}"
@@ -136,8 +191,6 @@ if st.button("✨ Recommend Outfit"):
             style
         )
 
-    # ---------------- RECOMMENDED OUTFIT ---------------- #
-
     st.markdown("## 👗 Recommended Outfit")
 
     st.markdown(
@@ -149,20 +202,14 @@ if st.button("✨ Recommend Outfit"):
         unsafe_allow_html=True
     )
 
-    # ---------------- STYLE MATCH ---------------- #
-
     st.markdown("## 📊 Style Match")
 
     st.progress(92)
     st.caption("92% contextual compatibility match")
 
-    # ---------------- COLORS ---------------- #
-
     st.markdown("## 🎨 Suggested Colors")
 
     st.success(", ".join(colors))
-
-    # ---------------- EXPLANATION ---------------- #
 
     st.markdown("## 🧠 Why This Works")
 
@@ -179,8 +226,6 @@ if st.button("✨ Recommend Outfit"):
             """,
             unsafe_allow_html=True
         )
-
-    # ---------------- FEEDBACK ---------------- #
 
     st.markdown("## 💭 Feedback")
 
