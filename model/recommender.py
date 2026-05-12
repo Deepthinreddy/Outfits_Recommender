@@ -2,8 +2,6 @@ import os
 import random
 import csv
 
-# ---------------- LOAD DATASET ---------------- #
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "data", "outfits.csv")
 
@@ -20,10 +18,7 @@ def load_data():
 
     return data
 
-
 df = load_data()
-
-# ---------------- COLOR PALETTES ---------------- #
 
 COLOR_MAP = {
 
@@ -44,13 +39,10 @@ COLOR_MAP = {
     ]
 }
 
-# ---------------- EXPLANATION GENERATOR ---------------- #
-
 def generate_explanation(weather, occasion, style):
 
     explanation = []
 
-    # Weather Logic
     if weather == "winter":
         explanation.append("Keeps you warm and comfortable")
 
@@ -60,7 +52,6 @@ def generate_explanation(weather, occasion, style):
     elif weather == "rainy":
         explanation.append("Practical and comfortable for rainy conditions")
 
-    # Occasion Logic
     if occasion == "formal":
         explanation.append("Gives a polished and professional look")
 
@@ -73,7 +64,6 @@ def generate_explanation(weather, occasion, style):
     else:
         explanation.append("Relaxed and comfortable for daily wear")
 
-    # Style Logic
     if style == "ethnic":
         explanation.append("Reflects cultural elegance")
 
@@ -82,12 +72,7 @@ def generate_explanation(weather, occasion, style):
 
     return explanation
 
-
-# ---------------- MAIN RECOMMENDER ---------------- #
-
 def recommend_outfit(gender, weather, occasion, style):
-
-    # -------- EXACT MATCH -------- #
 
     result = [
 
@@ -99,8 +84,6 @@ def recommend_outfit(gender, weather, occasion, style):
         and row["style"] == style
     ]
 
-    # -------- FALLBACK MATCH -------- #
-
     if not result:
 
         result = [
@@ -111,8 +94,6 @@ def recommend_outfit(gender, weather, occasion, style):
             and row["style"] == style
         ]
 
-    # -------- FINAL RANDOM FALLBACK -------- #
-
     if not result:
         result = [random.choice(df)]
 
@@ -122,24 +103,26 @@ def recommend_outfit(gender, weather, occasion, style):
 
     outfit_lower = outfit.lower()
 
-    # ---------------- SMART WEATHER ADJUSTMENTS ---------------- #
-
     # SUMMER
+
     if weather == "summer":
 
-        if "hoodie" in outfit_lower or "jacket" in outfit_lower:
+        if (
+            "hoodie" in outfit_lower
+            or "jacket" in outfit_lower
+        ):
 
             outfit = "oversized t-shirt + linen pants + sneakers"
 
-        elif "bodycon" in outfit_lower:
+        elif (
+            "bodycon" in outfit_lower
+            or "boots" in outfit_lower
+        ):
 
             outfit = "sleeveless midi dress + sandals + sling bag"
 
-        elif "boots" in outfit_lower:
-
-            outfit = "cotton dress + flats + tote bag"
-
     # WINTER
+
     elif weather == "winter":
 
         if (
@@ -158,6 +141,7 @@ def recommend_outfit(gender, weather, occasion, style):
             outfit = "full sleeve sweater + jeans + ankle boots"
 
     # RAINY
+
     elif weather == "rainy":
 
         if (
@@ -167,7 +151,7 @@ def recommend_outfit(gender, weather, occasion, style):
 
             outfit = "oversized shirt + joggers + waterproof sneakers"
 
-    # ---------------- SMART COLOR LOGIC ---------------- #
+    # COLORS
 
     if weather == "summer":
 
@@ -197,15 +181,11 @@ def recommend_outfit(gender, weather, occasion, style):
 
         colors = random.sample(COLOR_MAP[style], 3)
 
-    # ---------------- GENERATE EXPLANATIONS ---------------- #
-
     explanation = generate_explanation(
         weather,
         occasion,
         style
     )
-
-    # Additional contextual reasoning
 
     if weather == "summer":
 
@@ -224,7 +204,5 @@ def recommend_outfit(gender, weather, occasion, style):
         explanation.append(
             "Selected pieces are easier to wear in wet conditions"
         )
-
-    # ---------------- RETURN RESULTS ---------------- #
 
     return outfit, colors, explanation
