@@ -1,5 +1,5 @@
 import streamlit as st
-from model.recommender import recommend_outfit
+from recommender import recommend_outfit
 
 # ---------------- PAGE CONFIG ---------------- #
 
